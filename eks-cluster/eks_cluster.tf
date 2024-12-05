@@ -47,11 +47,25 @@ resource "aws_iam_role_policy_attachment" "eks_service_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
 }
 
+resource "aws_iam_role_policy_attachment" "eks_ecr_policy" {
+  role       = aws_iam_role.eks_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+}
+
 resource "aws_eks_cluster" "eks_cluster" {
   name     = "my-eks-cluster"
   role_arn = aws_iam_role.eks_role.arn
 
   vpc_config {
     subnet_ids = module.vpc.private_subnets # Subnety dla klastra
+  }
+}
+
+resource "aws_ecr_repository" "repository" {
+  name                 = "cluster-project-repository"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
   }
 }
