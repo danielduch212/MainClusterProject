@@ -14,7 +14,7 @@ resource "aws_iam_role" "node_role" {
 }
 
 
-resource "aws_role_policy_attachment" "node_policy" {
+resource "aws_iam_role_policy_attachment" "node_policy" {
 	role	= aws_iam_role.node_role.name
 	policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
 }
