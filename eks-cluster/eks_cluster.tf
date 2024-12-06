@@ -20,6 +20,17 @@ module "vpc" {
   azs             = ["eu-north-1a", "eu-north-1b", "eu-north-1c"]
   public_subnets  = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   private_subnets = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+
+
+  public_subnets_tags = {
+    "kubernetes.io/cluster/my-eks-cluster" = "shared"
+    "kubernetes.io/role/elb"              = "1"
+  }
+
+  private_subnets_tags = {
+    "kubernetes.io/cluster/my-eks-cluster" = "shared"
+    "kubernetes.io/role/internal-elb"     = "1"
+  }
 }
 
 resource "aws_iam_role" "eks_role" {
