@@ -59,6 +59,14 @@ resource "aws_eks_cluster" "eks_cluster" {
   vpc_config {
     subnet_ids = module.vpc.private_subnets # Subnety dla klastra
   }
+
+  enabled_cluster_log_types = [
+    "api",
+    "audit",
+    "authenticator",
+    "controllerManager",
+    "scheduler"
+  ]
 }
 
 resource "aws_ecr_repository" "repository" {
