@@ -4,7 +4,7 @@ on:
   workflow_dispatch
 
 jobs:
-  deploy:
+  test:
     name: Deploy to EKS
     runs-on: ubuntu-latest
 
@@ -32,3 +32,5 @@ jobs:
       
     - name: Get map config
       run: kubectl -n kube-system get configmap aws-auth -o yaml
+    - name: Describe subnets
+      run: aws ec2 describe-subnets --filters Name=tag:kubernetes.io/cluster/my-eks-cluster,Values=shared
