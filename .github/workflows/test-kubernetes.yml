@@ -24,5 +24,11 @@ jobs:
       with:
         kubectl-version: "latest"
 
+    - name: Update Kubeconfig
+      run: |
+        aws eks update-kubeconfig \
+          --name my-eks-cluster \
+          --region ${{ secrets.AWS_REGION }}
+      
     - name: Get map config
       run: kubectl -n kube-system get config-map aws-auth -o yaml
