@@ -22,12 +22,12 @@ module "vpc" {
   private_subnets = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 
 
-  public_subnets_tags = {
+  public_subnet_tags = {
     "kubernetes.io/cluster/my-eks-cluster" = "shared"
     "kubernetes.io/role/elb"              = "1"
   }
 
-  private_subnets_tags = {
+  private_subnet_tags = {
     "kubernetes.io/cluster/my-eks-cluster" = "shared"
     "kubernetes.io/role/internal-elb"     = "1"
   }
