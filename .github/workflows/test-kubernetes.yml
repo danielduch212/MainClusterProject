@@ -31,4 +31,4 @@ jobs:
           --region ${{ secrets.AWS_REGION }}
       
     - name: Get map config
-      run: kubectl -n kube-system get config-map aws-auth -o yaml
+      run: kubectl -n kube-system get configmap aws-auth -o yaml
