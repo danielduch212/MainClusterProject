@@ -88,3 +88,46 @@ resource "aws_ecr_repository" "repository" {
     scan_on_push = true
   }
 }
+
+resource "aws_iam_role_policy_attachment" "node_policy" {
+	role	= aws_iam_role.eks_role.name
+	policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "cni_policy" {
+	role       = aws_iam_role.eks_role.name
+  	policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+}
+
+resource "aws_iam_role_policy_attachment" "ecr_policy" {
+	role       = aws_iam_role.eks_role.name
+	policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_full_access" {
+  role       = aws_iam_role.eks_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_logs" {
+  role       = aws_iam_role.eks_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
+resource "aws_eks_node_group" "node_group" {
+  cluster_name    = aws_eks_cluster.eks_cluster.name
+  node_role_arn   = aws_iam_role.eks_role.arn
+  subnet_ids      = module.vpc.private_subnets
+  node_group_name = "my-node-group"
+
+  scaling_config {
+    desired_size = 2
+    max_size     = 3
+    min_size     = 1
+  }
+
+  instance_types = ["t3.medium"]
+}
+
+
+
