@@ -38,5 +38,8 @@ jobs:
     - name: Get Pods
       run: kubectl get pod -o wide
 
+    - name: Get SVC
+      run: kubectl get svc
+
     
       
