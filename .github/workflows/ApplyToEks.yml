@@ -26,7 +26,7 @@ jobs:
 
     - name: Update Kubeconfig
       run: |
-        aws eks update-config \
+        aws eks update-kubeconfig \
           --region ${{ secrets.AWS_REGION }} \
           --name my-eks-cluster
 
