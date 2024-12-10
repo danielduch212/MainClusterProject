@@ -37,3 +37,13 @@ jobs:
 
     - name: Get Pods
       run: kubectl get pod -o wide
+
+    - name: Erase Deployments
+      run: |
+        kubectl delete deployment backend-deployment-64696dcbc9-84qnq
+        kubectl delete deployment backend-deployment-64696dcbc9-9m9nk
+        kubectl delete deployment backend-deployment-64696dcbc9-qxr9g
+        kubectl delete deployment frontend-deployment-67cf4777d-h5vwk
+        kubectl delete deployment frontend-deployment-67cf4777d-pbtvd
+        kubectl delete deployment frontend-deployment-67cf4777d-slxmr
+      
