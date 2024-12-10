@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: ${{ secrets.AWS_ECR_FRONT_CONTAINER_URI }}
+        image: 043309366164.dkr.ecr.eu-north-1.amazonaws.com/cluster-project-repository:front
         ports:
         - containerPort: 80
