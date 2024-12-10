@@ -40,6 +40,7 @@ jobs:
 
     - name: Get SVC
       run: kubectl get svc
-
     
+    - name: Curl LB
+      run: curl http://a02ca154bee7e49a69104fddbbf1b99d-1793219927.${{ secrets.AWS_REGION }}.elb.amazonaws.com
       
