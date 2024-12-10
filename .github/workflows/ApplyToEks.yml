@@ -33,4 +33,7 @@ jobs:
     - name: Apply kubernetes yaml files
       working-directory: ./yamle
       run: kubectl apply -f .
-          
+
+    - name: Force update
+      run: kubectl rollout restart deployment/frontend-deployment
+
