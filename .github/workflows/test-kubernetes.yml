@@ -46,4 +46,7 @@ jobs:
         kubectl delete deployment frontend-deployment-67cf4777d-h5vwk
         kubectl delete deployment frontend-deployment-67cf4777d-pbtvd
         kubectl delete deployment frontend-deployment-67cf4777d-slxmr
+    
+    - name: Get Pods
+      run: kubectl get pod -o wide
       
