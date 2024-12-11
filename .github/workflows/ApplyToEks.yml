@@ -46,7 +46,9 @@ jobs:
           --set region=${{ secrets.AWS_REGION }} \
           --set vpcId=${{ secrets.AWS_VPC_ID }} \
           -n kube-system
-
+    - name: Wait 
+      run: kubectl wait --for=condition=available deployment/aws-load-balancer-controller -n kube-system --timeout=180s
+      
     - name: Apply kubernetes yaml files
       working-directory: ./yamle
       run: kubectl apply -f .
