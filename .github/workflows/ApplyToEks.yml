@@ -33,6 +33,9 @@ jobs:
     - name: Install Helm
       run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+    - name: Check Helm
+      run: which helm
+
     - name: Install ALB
       run: \ 
         helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
