@@ -29,6 +29,10 @@ jobs:
         aws eks update-kubeconfig \
           --region ${{ secrets.AWS_REGION }} \
           --name my-eks-cluster
+
+    - name: Install Helm
+      run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
     - name: Install ALB
       run: \ 
         helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
