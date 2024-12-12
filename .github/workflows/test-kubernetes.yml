@@ -43,4 +43,6 @@ jobs:
 
     - name: Describe ALB
       run: kubectl get ingress
-
+    
+    - name: Get pods
+      run: kubectl get pods -n kube-system
