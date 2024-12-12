@@ -46,3 +46,13 @@ jobs:
     
     - name: Get pods
       run: kubectl get pods -n kube-system
+
+    - name: Get ingress
+      run: kubectl get ingressclass
+
+    - name: Describe ingress
+      run: kubectl describe ingress main-ingress-1
+
+    - name: Get Logs
+      run: kubectl logs deployment/aws-load-balancer-controller -n kube-system
+
