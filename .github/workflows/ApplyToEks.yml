@@ -48,19 +48,19 @@ jobs:
           --policy-arn arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:policy/AWSLoadBalancerControllerIAMPolicy \
           --role-name AWSLoadBalancerControllerRole
 
-    - name: Install ALB
-      run: |
-        helm repo add eks https://aws.github.io/eks-charts
-        helm repo update
-        helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
-          --set clusterName=my-eks-cluster \
-          --set serviceAccount.create=false \
-          --set region=${{ secrets.AWS_REGION }} \
-          --set vpcId=${{ secrets.AWS_VPC_ID }} \
-          -n kube-system
+    #- name: Install ALB
+    #  run: |
+    #    helm repo add eks https://aws.github.io/eks-charts
+    #    helm repo update
+    #    helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+    #      --set clusterName=my-eks-cluster \
+    #      --set serviceAccount.create=false \
+    #      --set region=${{ secrets.AWS_REGION }} \
+    #      --set vpcId=${{ secrets.AWS_VPC_ID }} \
+    #      -n kube-system
           
-    - name: Wait 
-      run: kubectl wait --for=condition=available deployment/aws-load-balancer-controller -n kube-system --timeout=180s
+    #- name: Wait 
+    #  run: kubectl wait --for=condition=available deployment/aws-load-balancer-controller -n kube-system --timeout=180s
 
       
     - name: Apply kubernetes yaml files
