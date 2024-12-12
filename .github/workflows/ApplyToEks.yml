@@ -34,15 +34,6 @@ jobs:
       run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
           
-    - name: Create and Attach Load Balancer Controller IAM Role
-      run: |
-        aws iam create-role \
-          --role-name AWSLoadBalancerControllerRole \
-          --assume-role-policy-document file://trust-policy.json
-        aws iam attach-role-policy \
-          --policy-arn arn:aws:iam::043309366164:policy/aws-load-balancer-policy.json
-          --role-name AWSLoadBalancerControllerRole
-
     #- name: Install ALB
     #  run: |
     #    helm repo add eks https://aws.github.io/eks-charts
