@@ -56,3 +56,7 @@ jobs:
     - name: Get Logs
       run: kubectl logs deployment/aws-load-balancer-controller -n kube-system
 
+    - name: Check if oidc exist
+      run: aws eks describe-cluster --name my-eks-cluster --query "cluster.identity.oidc.issuer" --output text
+
+
