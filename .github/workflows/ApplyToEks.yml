@@ -55,7 +55,7 @@ jobs:
 
     - name: Apply ServiceAccount 
       working-directory: ./ServiceAccount
-      run: kubectl apply -f 
+      run: kubectl apply -f .
 
     - name: Force update
       run: kubectl rollout restart deployment/frontend-deployment
