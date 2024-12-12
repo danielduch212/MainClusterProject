@@ -33,13 +33,46 @@ jobs:
     - name: Install Helm
       run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-    - name: Check Helm
-      run: which helm
+    - name: Create Load Balancer Controller Policy
+      run: | 
+        aws iam create-policy \
+          --policy-name AWSLoadBalancerControllerIAMPolicy \
+          --policy-document file://aws-load-balancer-policy.json
+          
+    - name: Create and Attach Load Balancer Controller IAM Role
+      run: |
+        aws iam create-role \
+          --role-name AWSLoadBalancerControllerRole \
+          --assume-role-policy-document file://trust-policy.json
+        aws iam attach-role-policy \
+          --policy-arn arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:policy/AWSLoadBalancerControllerIAMPolicy \
+          --role-name AWSLoadBalancerControllerRole
+
+    - name: Install ALB
+      run: |
+        helm repo add eks https://aws.github.io/eks-charts
+        helm repo update
+        helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+          --set clusterName=my-eks-cluster \
+          --set serviceAccount.create=false \
+          --set region=${{ secrets.AWS_REGION }} \
+          --set vpcId=${{ secrets.AWS_VPC_ID }} \
+          -n kube-system
+          
+    - name: Wait 
+      run: kubectl wait --for=condition=available deployment/aws-load-balancer-controller -n kube-system --timeout=180s
+
       
     - name: Apply kubernetes yaml files
       working-directory: ./yamle
       run: kubectl apply -f .
 
+    - name: Apply ServiceAccount 
+      working-directory: ./ServiceAccount
+      run: kubectl apply -f 
+
     - name: Force update
       run: kubectl rollout restart deployment/frontend-deployment
+
+    
 
