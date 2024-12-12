@@ -5,7 +5,7 @@ on:
 
 jobs:
   test:
-    name: Deploy to EKS
+    name: Test eks
     runs-on: ubuntu-latest
 
     steps:
