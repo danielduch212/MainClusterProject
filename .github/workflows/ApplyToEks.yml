@@ -4,8 +4,8 @@ on:
   workflow_dispatch
 
 jobs:
-  deploy:
-    name: Deploy to EKS
+  deploy-pods:
+    name: Deploy pods on cluster
     runs-on: ubuntu-latest
 
     steps:
@@ -60,5 +60,39 @@ jobs:
     - name: Force update
       run: kubectl rollout restart deployment/frontend-deployment
 
-    
+  deploy-service-account:
+    needs: deploy-pods
+    name: Deploy service Account to kubernetes
+    runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+      contents: read
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        role-to-assume: arn:aws:iam::043309366164:role/AWSLoadBalancerControllerRole
+        aws-region: ${{ secrets.AWS_REGION }}
+        
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        kubectl-version: "latest"
+
+    - name: Update Kubeconfig
+      run: |
+        aws eks update-kubeconfig \
+          --region ${{ secrets.AWS_REGION }} \
+          --name my-eks-cluster
+          
+    - name: Apply ServiceAccount 
+      working-directory: ./ServiceAccount
+      run: kubectl apply -f .
+
+    - name: Force update
+      run: kubectl rollout restart deployment/frontend-deployment
