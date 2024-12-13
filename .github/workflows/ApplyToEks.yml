@@ -76,7 +76,7 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v3
       with:
-        role-to-assume: arn:aws:iam::043309366164:role/AWSLoadBalancerControllerRole
+        role-to-assume: arn:aws:iam::043309366164:role/load-balancer-oidc
         aws-region: ${{ secrets.AWS_REGION }}
         
     - name: Setup kubectl
