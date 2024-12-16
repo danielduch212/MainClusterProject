@@ -87,6 +87,9 @@ jobs:
 
     - name: Describe Kubectl
       run: kubectl config view
+
+    - name: Get Nodes
+      run: kubectl get nodes
       
     - name: Apply ServiceAccount 
       working-directory: ./ServiceAccount
