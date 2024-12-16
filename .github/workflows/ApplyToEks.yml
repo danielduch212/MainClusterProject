@@ -19,12 +19,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: Install AWS IAM Authenticator
-      run: curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/latest/2023-02-08/bin/linux/amd64/aws-iam-authenticator
-        chmod +x ./aws-iam-authenticator
-        sudo mv aws-iam-authenticator /usr/local/bin
-        aws-iam-authenticator version 
-      
     - name: Setup kubectl
       uses: azure/setup-kubectl@v3
       with:
@@ -90,7 +84,13 @@ jobs:
         aws eks update-kubeconfig \
           --region ${{ secrets.AWS_REGION }} \
           --name my-eks-cluster
-          
+
+    - name: Install AWS IAM Authenticator
+      run: curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/latest/2023-02-08/bin/linux/amd64/aws-iam-authenticator
+        chmod +x ./aws-iam-authenticator
+        sudo mv aws-iam-authenticator /usr/local/bin
+        aws-iam-authenticator version 
+      
     - name: Apply ServiceAccount 
       working-directory: ./ServiceAccount
       run: kubectl apply -f .
