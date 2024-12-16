@@ -84,10 +84,13 @@ jobs:
         aws eks update-kubeconfig \
           --region ${{ secrets.AWS_REGION }} \
           --name my-eks-cluster
+
+    - name: Describe Kubectl
+      run: kubectl config view
       
     - name: Apply ServiceAccount 
       working-directory: ./ServiceAccount
-      run: kubectl apply -f .
+      run: kubectl apply -f . 
 
     - name: Force update
       run: kubectl rollout restart deployment/frontend-deployment
