@@ -75,9 +75,4 @@ jobs:
     #      --cluster my-eks-cluster \
     #      --approve
 
-    - name: Download policies
-      run: | 
-        curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
-        aws iam create-policy \
-          --policy-name AWSLoadBalancer-custom-policy \
-          --policy-document file://iam-policy.json
+
