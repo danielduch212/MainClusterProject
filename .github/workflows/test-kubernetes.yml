@@ -60,12 +60,15 @@ jobs:
       run: aws eks describe-cluster --name my-eks-cluster --query "cluster.identity.oidc.issuer" --output text
 
     - name: Install eksctl
-      uses: Eficode/terraform-github-actions/eksctl-install@v1
-
-    - name: Check eksctl
-      run: | 
+      run: |
+        curl --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" \
+        | tar xz -C /tmp
+        sudo mv /tmp/eksctl /usr/local/bin/eksctl
+        chmod +x /usr/local/bin/eksctl
         which eksctl
         eksctl version
+
+
         
     - name: Assosciate IAM Provider
       run: |
