@@ -46,7 +46,10 @@ jobs:
     
     - name: Get pods
       run: kubectl get pods -n kube-system
-
+      
+    - name: Check if oidc exist
+      run: aws eks describe-cluster --name my-eks-cluster --query "cluster.identity.oidc.issuer" --output text
+      
     - name: Get ingress
       run: kubectl get ingressclass
 
@@ -56,8 +59,6 @@ jobs:
     - name: Get Logs
       run: kubectl logs deployment/aws-load-balancer-controller -n kube-system
 
-    - name: Check if oidc exist
-      run: aws eks describe-cluster --name my-eks-cluster --query "cluster.identity.oidc.issuer" --output text
 
     #- name: Install eksctl
     #  run: |
