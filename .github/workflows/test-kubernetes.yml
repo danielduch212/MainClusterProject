@@ -62,7 +62,7 @@ jobs:
     - name: Assosciate IAM Provider
       run: |
         eksctl utils associate-iam-oidc-provider \
-          --region <REGION> \
+          --region ${{ secrets.AWS_REGION }} \
           --cluster my-eks-cluster \
           --approve
 
