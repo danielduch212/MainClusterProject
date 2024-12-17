@@ -59,4 +59,10 @@ jobs:
     - name: Check if oidc exist
       run: aws eks describe-cluster --name my-eks-cluster --query "cluster.identity.oidc.issuer" --output text
 
+    - name: Assosciate IAM Provider
+      run: |
+        eksctl utils associate-iam-oidc-provider \
+          --region <REGION> \
+          --cluster my-eks-cluster \
+          --approve
 
