@@ -68,10 +68,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    #- name: Configure AWS credentials
+    #  uses: aws-actions/configure-aws-credentials@v3
+    #  with:
+    #    role-to-assume: arn:aws:iam::043309366164:role/load-balancer-oidc
+    #    aws-region: ${{ secrets.AWS_REGION }}
+    
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v3
+      uses: aws-actions/configure-aws-credentials@v2
       with:
-        role-to-assume: arn:aws:iam::043309366164:role/load-balancer-oidc
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
         
     - name: Setup kubectl
