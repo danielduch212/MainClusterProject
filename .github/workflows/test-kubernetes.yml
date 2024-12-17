@@ -59,6 +59,12 @@ jobs:
     - name: Check if oidc exist
       run: aws eks describe-cluster --name my-eks-cluster --query "cluster.identity.oidc.issuer" --output text
 
+    - name: Install EKS CTL
+      run: |
+        curl --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" \
+        | tar xz -C /tmp
+        sudo mv /tmp/eksctl /usr/local/bi
+    
     - name: Assosciate IAM Provider
       run: |
         eksctl utils associate-iam-oidc-provider \
