@@ -64,7 +64,15 @@ jobs:
         curl --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" \
         | tar xz -C /tmp
         sudo mv /tmp/eksctl /usr/local/bi
-    
+
+    - name: Install eksctl
+      uses: Eficode/terraform-github-actions/eksctl-install@v1
+
+    - name: Check eksctl
+      run: | 
+        which eksctl
+        eksctl version
+        
     - name: Assosciate IAM Provider
       run: |
         eksctl utils associate-iam-oidc-provider \
