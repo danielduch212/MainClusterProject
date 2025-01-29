@@ -39,7 +39,9 @@ jobs:
           echo "OIDC Provider does not exist."
           echo "EXISTS=false" >> $GITHUB_ENV
         fi 
-            
+    - name: Test - show OIDC_URL
+      run: echo "$OIDC_URL"
+      
     - name: Register Provider if not exists
       if: env.EXISTS == 'false'
       run:  aws iam create-open-id-connect-provider \
