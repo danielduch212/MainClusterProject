@@ -35,7 +35,7 @@ jobs:
           echo "EXISTS=false" >> GITHUB_ENV    
             
     - name: Register Provider if not exists
-      if: env.EXISTS = 'false'
+      if: env.EXISTS == 'false'
       run:  aws iam create-open-id-connect-provider \
               --url $OIDC_URL \
               --thumbprint-list 0123456789abcdef0123456789abcdef01234567
