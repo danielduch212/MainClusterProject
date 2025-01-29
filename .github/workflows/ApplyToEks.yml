@@ -30,7 +30,9 @@ jobs:
       id: check-oidc
       run: |
         OIDC_ARN=$(aws iam list-open-id-connect-providers --query "OpenIDConnectProviderList[*].Arn" --output text)
-        if echo "$OIDC_ARN" | grep -q "$(echo $OIDC_URL | sed 's~https://~~')"; then
+        PROVIDER_ID=$(echo $OIDC_URL | sed 's~https://~~')  # Usuwamy https://
+        EXPECTED_ARN="arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:oidc-provider/$PROVIDER_ID"  
+        if echo "$OIDC_ARN" | grep -q "$EXPECTED_ARN"; then
           echo "OIDC Provider already exists."
           echo "EXISTS=true" >> $GITHUB_ENV         
         else
