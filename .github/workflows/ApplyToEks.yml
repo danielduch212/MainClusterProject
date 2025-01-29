@@ -22,8 +22,9 @@ jobs:
     #Need to create OIDC Provider for EKS - to grant access for ALB with Service Account (IRSA to manipulate on EKS)
     - name: Get OIDC Provider URL for EKS
       run: | 
-        URL=$(aws eks describe-cluster --name my-cluster --query "cluster.identity.oidc.issuer" --output text)
+        URL=$(aws eks describe-cluster --name my-eks-cluster --query "cluster.identity.oidc.issuer" --output text)
         echo "OIDC_URL=$URL" >> $GITHUB_ENV
+        
     - name: Check if OIDC Provider exists 
       run: |
         EXISTS=$(aws iam list-open-id-connect-providers | grep -c "$(echo $OIDC_URL | sed 's~https://~~')"
