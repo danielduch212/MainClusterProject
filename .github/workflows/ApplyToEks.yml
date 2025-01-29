@@ -23,6 +23,7 @@ jobs:
     - name: Get OIDC Provider URL for EKS
       run: | 
         URL=$(aws eks describe-cluster --name my-eks-cluster --query "cluster.identity.oidc.issuer" --output text)
+        echo $URL
         echo "OIDC_URL=$URL" >> $GITHUB_ENV
         
     - name: Check if OIDC Provider exists 
