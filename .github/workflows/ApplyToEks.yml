@@ -28,7 +28,7 @@ jobs:
         
     - name: Check if OIDC Provider exists 
       run: |
-        EXISTS=$(aws iam list-open-id-connect-providers | grep -c "$(echo $OIDC_URL | sed 's~https://~~')"
+        EXISTS=$(aws iam list-open-id-connect-providers | grep -c "$(echo $OIDC_URL | sed 's~https://~~')")
         if [ "$EXISTS" -gt 0]; then
           echo "OIDC Provider already exists."
           echo "EXISTS=true" >> GITHUB_ENV
