@@ -26,17 +26,17 @@ jobs:
         echo $URL
         echo "OIDC_URL=$URL" >> $GITHUB_ENV
         
-        - name: Check if OIDC Provider exists
-          id: check-oidc
-          run: |
-          OIDC_ARN=$(aws iam list-open-id-connect-providers --query "OpenIDConnectProviderList[*].Arn" --output text)
-          if echo "$OIDC_ARN" | grep -q "$(echo $OIDC_URL | sed 's~https://~~')"; then
-            echo "OIDC Provider already exists."
-            echo "EXISTS=true" >> $GITHUB_ENV
-          else
-            echo "OIDC Provider does not exist."
-            echo "EXISTS=false" >> $GITHUB_ENV
-          fi 
+    - name: Check if OIDC Provider exists
+      id: check-oidc
+      run: |
+        OIDC_ARN=$(aws iam list-open-id-connect-providers --query "OpenIDConnectProviderList[*].Arn" --output text)
+        if echo "$OIDC_ARN" | grep -q "$(echo $OIDC_URL | sed 's~https://~~')"; then
+          echo "OIDC Provider already exists."
+          echo "EXISTS=true" >> $GITHUB_ENV         
+        else
+          echo "OIDC Provider does not exist."
+          echo "EXISTS=false" >> $GITHUB_ENV
+        fi 
             
     - name: Register Provider if not exists
       if: env.EXISTS == 'false'
