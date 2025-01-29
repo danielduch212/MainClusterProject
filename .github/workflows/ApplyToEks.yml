@@ -18,7 +18,28 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
-
+        
+    #Need to create OIDC Provider for EKS - to grant access for ALB with Service Account (IRSA to manipulate on EKS)
+    - name: Get OIDC Provider URL for EKS
+      run: | 
+        URL=$(aws eks describe-cluster --name my-cluster --query "cluster.identity.oidc.issuer" --output text)
+        echo "OIDC_URL=$URL" >> $GITHUB_ENV
+    - name: Check if OIDC Provider exists 
+      run: |
+        EXISTS=$(aws iam list-open-id-connect-providers | grep -c "$(echo $OIDC_URL | sed 's~https://~~')"
+        if [ "$EXISTS" -gt 0]; then
+          echo "OIDC Provider already exists."
+          echo "EXISTS=true" >> GITHUB_ENV
+        else 
+          echo "OIDC Provider does not exists."
+          echo "EXISTS=false" >> GITHUB_ENV    
+            
+    - name: Register Provider if not exists
+      if: env.EXISTS = 'false'
+      run:  aws iam create-open-id-connect-provider \
+              --url $OIDC_URL \
+              --thumbprint-list 0123456789abcdef0123456789abcdef01234567
+      
     - name: Setup kubectl
       uses: azure/setup-kubectl@v3
       with:
