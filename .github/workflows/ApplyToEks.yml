@@ -51,9 +51,9 @@ jobs:
         
     - name: Register Provider if not exists
       if: env.EXISTS == 'false'
-      run:  aws iam create-open-id-connect-provider \
-              --url "$OIDC_URL" \
-              --thumbprint-list 0123456789abcdef0123456789abcdef01234567
+      run: |
+        echo "Registering OIDC Provider with URL: '$OIDC_URL'"
+        aws iam create-open-id-connect-provider --url "$OIDC_URL" --thumbprint-list 0123456789abcdef0123456789abcdef01234567
       
     - name: Setup kubectl
       uses: azure/setup-kubectl@v3
@@ -69,7 +69,6 @@ jobs:
     - name: Install Helm
       run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-          
     - name: Install ALB
       run: |
         helm repo add eks https://aws.github.io/eks-charts
