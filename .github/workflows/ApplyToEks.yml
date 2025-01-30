@@ -65,7 +65,11 @@ jobs:
         aws eks update-kubeconfig \
           --region ${{ secrets.AWS_REGION }} \
           --name my-eks-cluster
-
+          
+    - name: Apply ServiceAccount 
+      working-directory: ./ServiceAccount
+      run: kubectl apply -f 
+      
     - name: Install Helm
       run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
@@ -132,10 +136,6 @@ jobs:
 
     - name: Get Nodes
       run: kubectl get nodes
-      
-    - name: Apply ServiceAccount 
-      working-directory: ./ServiceAccount
-      run: kubectl apply -f . 
 
     - name: Force update
       run: kubectl rollout restart deployment/frontend-deployment
