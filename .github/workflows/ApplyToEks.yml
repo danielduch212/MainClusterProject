@@ -39,13 +39,20 @@ jobs:
           echo "OIDC Provider does not exist."
           echo "EXISTS=false" >> $GITHUB_ENV
         fi 
+        
     - name: Test - show OIDC_URL
       run: echo "$OIDC_URL"
       
+    - name: Clean URL to correct format
+      run: |
+        CLEANED_URL=$(echo "$OIDC_URL" | tr -d '\r' | tr -d '\n' | xargs)
+        echo "Cleaned OIDC_URL='$CLEANED_URL'"
+        echo "OIDC_URL=$CLEANED_URL" >> $GITHUB_ENV
+        
     - name: Register Provider if not exists
       if: env.EXISTS == 'false'
       run:  aws iam create-open-id-connect-provider \
-              --url "$(echo -n $OIDC_URL)" \
+              --url "$OIDC_URL" \
               --thumbprint-list 0123456789abcdef0123456789abcdef01234567
       
     - name: Setup kubectl
