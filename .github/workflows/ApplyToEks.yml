@@ -42,7 +42,22 @@ jobs:
         
     - name: Test - show OIDC_URL
       run: echo "$OIDC_URL"
-      
+
+    - name: Get Current Trust Policy
+      run: |
+         aws iam get-role --role-name load-balancer-controller-eks-oidc --query "AssumeRolePolicyDocument" --output json > trust-policy.json
+         cat trust-policy.json
+
+    - name: Update Trust Policy
+      run: |
+          jq --arg oidc "arn:aws:iam::043309366164:oidc-provider/oidc.eks.eu-north-1.amazonaws.com/id/$OIDC_ID" \
+             '.Statement[0].Principal.Federated = $oidc' trust-policy.json > new-trust-policy.json
+          cat new-trust-policy.json
+
+    - name: Apply Updated Trust Policy
+      run: |
+        aws iam update-assume-role-policy --role-name load-balancer-controller-eks-oidc --policy-document file://new-trust-policy.json
+        
     - name: Clean URL to correct format
       run: |
         CLEANED_URL=$(echo "$OIDC_URL" | tr -d '\r' | tr -d '\n' | xargs)
