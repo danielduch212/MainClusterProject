@@ -43,6 +43,9 @@ jobs:
     - name: Test - show OIDC_URL
       run: echo "$OIDC_URL"
 
+    - name: List roles
+      run: aws iam list-roles 
+
     - name: Get Current Trust Policy
       run: |
          aws iam get-role --role-name load-balancer-controller-eks-oidc --query "AssumeRolePolicyDocument" --output json > trust-policy.json
