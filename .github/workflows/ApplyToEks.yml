@@ -48,7 +48,7 @@ jobs:
 
     - name: Get Current Trust Policy
       run: |
-         aws iam get-role --role-name load-balancer-controller-eks-oidc --query "AssumeRolePolicyDocument" --output json > trust-policy.json
+         aws iam get-role --role-name load-balancer-conroller-eks-oidc --query "AssumeRolePolicyDocument" --output json > trust-policy.json
          cat trust-policy.json
 
     - name: Update Trust Policy
@@ -59,7 +59,7 @@ jobs:
 
     - name: Apply Updated Trust Policy
       run: |
-        aws iam update-assume-role-policy --role-name load-balancer-controller-eks-oidc --policy-document file://new-trust-policy.json
+        aws iam update-assume-role-policy --role-name load-balancer-conroller-eks-oidc --policy-document file://new-trust-policy.json
         
     - name: Clean URL to correct format
       run: |
